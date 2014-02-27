@@ -17,31 +17,25 @@ list<int> exact_match(const string &pat, const string &text) {
   list<int> indices_found; // index (or indices) for each match.
 
   // given a character and index in a pattern, how much should skip it? 
-  map<char, list<int> > charToSkipDistance; // todo: should it restrict it to genomic alphabet?
+  map<char,int> charToSkipDistance; 
 
   // guard - if either pattern or text is empty, return empty list of indices.
   if (pat.empty() || text.empty() ) {
     return indices_found;  
   }
 
-  // preprocessing - bad character table
-  int i = pat.length() -1;
-  do {
-    char ch  = pat[i];
-    charToSkipDistance[ch].push_back(i);
-    i--;
-  } while (i >= 0);
+  // preprocessing - skip table
+  
+  for(int i = 0; i < pat.length(); i++) {
+    int val = max(1, int(pat.length() - 1 - i));
+    charToSkipDistance[pat[i]] = val;
+  } 
   
   // print table 
-  map<char, list<int> >::iterator pos; 
+  map<char, int>::iterator pos; 
   for (pos = charToSkipDistance.begin(); pos != charToSkipDistance.end(); ++pos){
     cout << "key: " << pos->first << "\t" 
-  	 << "value: " ;
-    list<int>::iterator list_pos;
-    for(list_pos = pos->second.begin(); list_pos != pos->second.end(); ++list_pos){
-       cout << *list_pos << " "; 
-    }
-    cout << endl;
+  	 << "value: " << pos->second << endl;
   }
 
   // search 
@@ -56,27 +50,22 @@ list<int> exact_match(const string &pat, const string &text) {
       h--;
     }
     if (i == 0) {
-      // found match 
-      indices_found.push_front(h);
+      if (pat[i] == text[h]) {
+	// found match 
+	indices_found.push_back(h);
+      }
       if( k + n > m) {
 	k = m;
       } else { 
 	k = k + n + 1 ;
       }
     } else {
-      // apply bad character rule 
+      // apply skip table
       char ch = text[h];
       if (pat.find(ch) == string::npos){
 	k += n + 1; 
       } else {
-	list<int> indices = charToSkipDistance[ch];
-	list<int>::iterator list_pos;
-	for(list_pos = indices.begin(); list_pos != indices.end(); ++list_pos){
-	  if (*list_pos < i) {
-	    k += *list_pos + 1;
-	    break; 
-	  }
-	}
+	k += charToSkipDistance[ch];
       }
     }
   }

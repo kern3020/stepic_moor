@@ -19,14 +19,15 @@ TEST(ExactTest, SimpleCommonCase) {
 }
 
 TEST(ExactTest, SimpleSeqCase) {
-  ifstream fasta_file("test_data/foo.fasta");
+  string filename("test_data/foo.fasta");
+  ifstream fasta_file(filename.c_str());
   int seq_size = 512;
   int line_size = 128;
   char *buf = new char(line_size); 
   string seq;
   
   if ( !fasta_file) {
-    FAIL() << "can't open input file \"" << fasta_file << "\"";
+    FAIL() << "can't open input file \"" << filename << "\"";
   }
 
   // ignore - header which is the first line of the fasta file.
@@ -53,7 +54,11 @@ TEST(ExactTest, SimpleSeqCase) {
   seq.erase( std::remove_if( seq.begin(), seq.end(), ::isspace ), seq.end() );
 
   list<int> exp;
-  exp.push_front(9);
+  exp.push_back(4);
+  exp.push_back(166);
+  exp.push_back(222);
+  exp.push_back(334);
+  exp.push_back(344);
   
   EXPECT_EQ(exp, exact_match("GTA", seq)); // CAATA
 }
