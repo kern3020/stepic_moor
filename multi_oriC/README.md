@@ -8,6 +8,6 @@ genome (roughly 700000bp). You can download the genomic data [here]
 (https://beta.stepic.org/media/attachments/lessons/64/W.glossinidia.fasta).
 
 ![GC Skew for Wigglesworthia glossinidia.]
-(https://github.com/kern3020/stepic_moor/blob/master/multi_oriC/img/W.glossinidia_GC_skew.png
+(https://raw.github.com/kern3020/stepic_moor/master/multi_oriC/img/W.glossinidia_GC_skew.png
  "GC Skew for Wigglesworthia glossinidia.")
 
