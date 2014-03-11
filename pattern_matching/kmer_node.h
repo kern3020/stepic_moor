@@ -17,7 +17,7 @@ using namespace std;
 
    This KmerNode is designed to work with a BK Tree. The edge between
    the parent and child is the edit distance between the names of the
-   two nodes.  Initially, edit distance is simply hamming distance. 
+   two nodes. Edit distance is levensthein distance. 
  */
 
 class KmerNode {
@@ -74,7 +74,7 @@ class KmerNode {
 
 
   /**
-     compute levenshtein distance. 
+     Compute levenshtein distance. 
    */ 
   int levensthein(string seq) {
     transform(seq.begin(), seq.end(), seq.begin(), ::toupper);
@@ -86,7 +86,9 @@ class KmerNode {
   }
 
   /**
-     compute the Hamming distance between two equal length strings. 
+     Compute the Hamming distance between two equal length strings.
+     Not used at this time. Keeping it because I may want to compare
+     it against levenstein distance. 
    */
   int hamming(string seq);
 

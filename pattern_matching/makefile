@@ -16,4 +16,4 @@ exact_test: exact.o $(GTEST_DIR)/make/gtest_main.a
 
 .PHONY: clean
 clean:
-	rm $(OBJS) exact_test.o exact_test bk_node_test kmer_node_test *~ 2> /dev/null
+	rm $(OBJS) exact_test bk_node_test kmer_node_test *~ 2> /dev/null

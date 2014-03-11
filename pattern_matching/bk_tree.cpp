@@ -1,5 +1,31 @@
 #include "bk_tree.h"
 
+void BkTree::find_matches(const string &seq, int tolerance, 
+			  shared_ptr<KmerNode> node,  
+			  shared_ptr<vector<string>> matches,  int depth) {
+  int nd = node->levensthein(seq);
+  if (nd <= tolerance) {
+    matches->push_back(node->getName());
+  }
+
+  int lower_bound = nd - tolerance; 
+  int upper_bound = nd + tolerance; 
+  for (int i = lower_bound; i <= upper_bound; i++){
+    if (node->hasChild(i)) {
+      this->find_matches(seq, tolerance, node->getChild(i), matches, ++depth); 
+    }
+  }
+}
+
+shared_ptr<vector<string>> BkTree::find_matches(const string &seq, int tolerance) {
+  auto results = make_shared<vector<string>>();
+  int depth = 0; 
+  if (this->root) { 
+    this->find_matches(seq, tolerance, this->root, results, depth);
+  }
+  return results;
+}
+
 void BkTree::insert(string seq, int pos) {
   transform(seq.begin(), seq.end(), seq.begin(), ::toupper);
   if (this->root == nullptr) { 

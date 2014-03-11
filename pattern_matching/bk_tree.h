@@ -16,6 +16,11 @@ class BkTree {
   shared_ptr<KmerNode> root; 
 
  private: 
+  /**
+   */
+  void find_matches(const string &seq, int tolerance, 
+		    shared_ptr<KmerNode> node,  
+		    shared_ptr<vector<string>> matches, int depth);
 
   /**
      Used internally to recurively insert a node. 
@@ -30,6 +35,11 @@ class BkTree {
  public: 
  BkTree(): root(nullptr) {} 
 
+  /**
+     Given a string 'seq', return a vector of strings within distance
+     'tolerance'.
+   */
+  shared_ptr<vector<string>> find_matches(const string &seq, int tolerance); 
 
   /**
      insert a node.
