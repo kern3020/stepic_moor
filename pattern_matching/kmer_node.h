@@ -34,8 +34,8 @@ class KmerNode {
 
  public:
 
-  KmerNode(const string &name, int pos) { 
-    this->name = name;
+  KmerNode(const string &kmer_name, int pos) { 
+    this->name = kmer_name;
     transform(this->name.begin(), this->name.end(), this->name.begin(), ::toupper);
     this->positions.push_back( pos);
     this->count = 1;
@@ -72,13 +72,12 @@ class KmerNode {
     return make_pair(this->positions.begin(), this->positions.end());
   }
 
-
   /**
      Compute levenshtein distance. 
    */ 
   int levensthein(string seq) {
     transform(seq.begin(), seq.end(), seq.begin(), ::toupper);
-    this->levensthein(
+    return this->levensthein(
 		      this->name, 
 		      this->name.size(), 
 		      seq,

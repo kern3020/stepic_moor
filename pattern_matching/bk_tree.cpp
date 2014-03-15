@@ -2,10 +2,10 @@
 
 void BkTree::find_matches(const string &seq, int tolerance, 
 			  shared_ptr<KmerNode> node,  
-			  shared_ptr<vector<string>> matches,  int depth) {
+			  shared_ptr<vector<KmerNode>> matches,  int depth) {
   int nd = node->levensthein(seq);
   if (nd <= tolerance) {
-    matches->push_back(node->getName());
+    matches->push_back(*node);
   }
 
   int lower_bound = nd - tolerance; 
@@ -17,8 +17,8 @@ void BkTree::find_matches(const string &seq, int tolerance,
   }
 }
 
-shared_ptr<vector<string>> BkTree::find_matches(const string &seq, int tolerance) {
-  auto results = make_shared<vector<string>>();
+shared_ptr<vector<KmerNode>> BkTree::find_matches(const string &seq, int tolerance) {
+  auto results = make_shared<vector<KmerNode>>();
   int depth = 0; 
   if (this->root) { 
     this->find_matches(seq, tolerance, this->root, results, depth);

@@ -14,11 +14,11 @@ TEST (BkTreeTest, InsertAndFind) {
   tree->insert("cape", 33);
   tree->insert("cart", 53);
   tree->print();
-  shared_ptr <vector<string>> r = tree->find_matches("cook",2); 
-  // cout << "result: " ; 
-  // for (auto elem : *r) { 
-  //   cout << elem << endl; 
-  // }
+  shared_ptr <vector<KmerNode>> r = tree->find_matches("cook",2); 
+  cout << "result: " ; 
+  for (auto elem : *r) { 
+     cout << elem << endl; 
+  }
   EXPECT_FALSE(r->empty()); 
   EXPECT_EQ(5, r->size());
 }
