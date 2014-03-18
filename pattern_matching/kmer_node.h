@@ -10,6 +10,8 @@
 
 using namespace std;
 
+#include "distance.h"
+
 /**
    K-mer is a K length sequence. So, I 9-mer is a sequence of length
    9. This class will be used in a bk-tree to find sequences of the
@@ -17,7 +19,7 @@ using namespace std;
 
    This KmerNode is designed to work with a BK Tree. The edge between
    the parent and child is the edit distance between the names of the
-   two nodes. Edit distance is levensthein distance. 
+   two nodes. 
  */
 
 class KmerNode {
@@ -26,11 +28,7 @@ class KmerNode {
   vector<int> positions;
   int count;
   map< int, shared_ptr<KmerNode> > children; // edit distance => node
-
-  /**
-     internally call to recursively compute levensthein distance. 
-   */
-  int levensthein(const string &s, int len_s, const string &t, int len_t);
+  shared_ptr <Distance> d_ptr; 
 
  public:
 
@@ -39,6 +37,7 @@ class KmerNode {
     transform(this->name.begin(), this->name.end(), this->name.begin(), ::toupper);
     this->positions.push_back( pos);
     this->count = 1;
+    this->d_ptr = make_shared<LevenstheinReference>();
   }
 
   int getCount() { return count; } 
@@ -73,23 +72,12 @@ class KmerNode {
   }
 
   /**
-     Compute levenshtein distance. 
+     Computes edit distance. 
    */ 
-  int levensthein(string seq) {
+  int distance(string seq) {
     transform(seq.begin(), seq.end(), seq.begin(), ::toupper);
-    return this->levensthein(
-		      this->name, 
-		      this->name.size(), 
-		      seq,
-		      seq.size()); 
+    return this->d_ptr->distance(this->name, seq);
   }
-
-  /**
-     Compute the Hamming distance between two equal length strings.
-     Not used at this time. Keeping it because I may want to compare
-     it against levenstein distance. 
-   */
-  int hamming(string seq);
 
   // operators 
   bool operator==(const KmerNode &other) const;

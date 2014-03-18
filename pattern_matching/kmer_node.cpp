@@ -1,38 +1,5 @@
 #include "kmer_node.h"
 
-#include <cassert>
-
-int KmerNode::hamming(string seq) {
-  int deltas = 0; 
-  assert(this->name.length() == seq.length());
-  int s = this->name.length();
-  for (int i = 0; i < s; i++) {
-    if (this->name[i] != seq[i]) {
-      deltas += 1;
-    }
-  }
-  return deltas; 
-}
-
-/**
-   This implementation of levensthein distance is very readable and
-   directly maps to the algorithm. Performance may be an issue. If so,
-   keep this version around. The unit tests can use it to compare
-   against the optimize version.
- */
-
-int KmerNode::levensthein(const string &s, int len_s, const string &t, int len_t){
-  if (len_s == 0 ) return len_t;
-  if (len_t == 0 ) return len_s; 
-
-  int cost = s[len_s - 1] == t[len_t - 1] ? 0 : 1;
-  
-  return min({ 
-      this->levensthein(s, len_s - 1, t, len_t) + 1, 
-	this->levensthein(s, len_s, t, len_t - 1 ) + 1 , 
-	this->levensthein(s, len_s - 1, t, len_t - 1 ) + cost
-	}); 
-}
 
 bool KmerNode::hasChild(int distance) {
   return  (this->children.find(distance) != this->children.end() ? true : false );  

@@ -3,7 +3,7 @@
 void BkTree::find_matches(const string &seq, int tolerance, 
 			  shared_ptr<KmerNode> node,  
 			  shared_ptr<vector<KmerNode>> matches,  int depth) {
-  int nd = node->levensthein(seq);
+  int nd = node->distance(seq);
   if (nd <= tolerance) {
     matches->push_back(*node);
   }
@@ -39,7 +39,7 @@ void BkTree::insert(string seq, int pos, shared_ptr<KmerNode> node) {
   if (seq == node->getName()) {
     node->inc(pos);
   } else {
-    int d = node->levensthein(seq);
+    int d = node->distance(seq);
     if (!node->hasChild(d) ) {
       node->insertChild(d, make_shared<KmerNode>(seq, pos));
     } else {
