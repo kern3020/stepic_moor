@@ -27,3 +27,12 @@ TEST(DistanceTest, LevenstheinReference) {
   string what("what");
   EXPECT_EQ(3, l.distance(water, what));
 }
+
+TEST(DistanceTest, SeqAlignDP) { 
+  string s1("writers");
+  string s2("vintner"); 
+  SeqAlignDP dp(s2, s1);
+  int d = dp.distance();
+  dp.print();
+  EXPECT_EQ(5, d);
+}

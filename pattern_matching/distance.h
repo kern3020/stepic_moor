@@ -33,6 +33,21 @@ class LevenstheinReference : public Distance {
   virtual int distance (const string &s1, const string &s2);
 };
 
-
+/**
+   Use dynamic programming to compute the edit distance(shortest path)
+   between to strings. 
+ */
+class SeqAlignDP {
+  string seq1;
+  string seq2;
+  int nrows; 
+  int ncols;
+  int *matrix; 
+ public:
+  SeqAlignDP(const string &s1, const string &s2);
+  ~SeqAlignDP();
+  int distance();
+  void print(); 
+}; 
 
 #endif
