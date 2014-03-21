@@ -6,12 +6,12 @@
 
 using namespace std;
 
-int Hamming::distance (const string &s1, const string &s2) {
+int Hamming::distance () {
   int deltas = 0; 
-  assert(s1.length() == s2.length());
-  int s = s1.length();
+  assert(this->seq1.length() == this->seq2.length());
+  int s = this->seq1.length();
   for (int i = 0; i < s; i++) {
-    if (s1[i] != s2[i]) {
+    if (this->seq1[i] != this->seq2[i]) {
       deltas += 1;
     }
   }
@@ -32,8 +32,9 @@ int LevenstheinReference::distance(const string &s, int len_s, const string &t, 
        });
 } 
 
-int LevenstheinReference::distance(const string &s1, const string &s2) {
-  return this->distance(s1, s1.size(), s2, s2.size());
+int LevenstheinReference::distance() {
+  return this->distance(this->seq1, this->seq1.size(), 
+			this->seq2, this->seq2.size());
 }
 
 SeqAlignDP::SeqAlignDP(const string &s1, const string &s2) {

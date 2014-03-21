@@ -7,12 +7,18 @@ using  namespace std;
 
 class Distance {
  public:
-  virtual int distance (const string &s1, const string &s2) = 0;
+  virtual int distance () = 0;
 }; 
 
 class Hamming : public Distance {
+  string seq1;
+  string seq2;  
  public: 
-  virtual int distance (const string &s1, const string &s2);
+  Hamming(const string &s1, const string &s2) {
+    this->seq1 = s1;
+    this->seq2 = s2; 
+  }
+  virtual int distance ();
 };
 
 
@@ -24,13 +30,29 @@ class Hamming : public Distance {
  */
 
 class LevenstheinReference : public Distance {
+  string seq1; 
+  string seq2; 
+
   /**
      internally call to recursively compute levensthein distance. 
   */
   int distance(const string &s, int len_s, const string &t, int len_t);
   
  public:
-  virtual int distance (const string &s1, const string &s2);
+  LevenstheinReference(const string &s1, const string &s2){
+    this->seq1 = s1;
+    this->seq2 = s2;
+  };
+
+  virtual int distance ();
+
+  void setSeq1(const string &s1) { 
+    this->seq1 = s1; 
+  };
+
+  void setSeq2(const string &s2) { 
+    this->seq2 = s2; 
+  };
 };
 
 /**

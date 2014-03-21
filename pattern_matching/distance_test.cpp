@@ -6,26 +6,26 @@
 TEST(DistanceTest, Hamming) {
   string s1("ACGTTCTC");
   string s2("ACATTATC");
-  Hamming h;
+  Hamming h(s1, s2);
 
-  EXPECT_EQ(2, h.distance(s1,s2));
+  EXPECT_EQ(2, h.distance());
 }
 
 TEST(DistanceTest, LevenstheinReference) {
-  LevenstheinReference l;
   string s1("kitten");
   string s2("sitting");
-  EXPECT_EQ(3, l.distance(s1,s2));
+  LevenstheinReference l(s1,s2);
+  EXPECT_EQ(3, l.distance());
  
-  string cook ("cook"); 
-  string book("book");
-  EXPECT_EQ(1, l.distance(cook, book));
-  string books("books");
-  EXPECT_EQ(2, l.distance(cook, books));
+  l.setSeq1("cook"); 
+  l.setSeq2("book");
+  EXPECT_EQ(1, l.distance());
+  l.setSeq2("books");
+  EXPECT_EQ(2, l.distance());
 
-  string water("water");
-  string what("what");
-  EXPECT_EQ(3, l.distance(water, what));
+  l.setSeq1("water");
+  l.setSeq2("what");
+  EXPECT_EQ(3, l.distance());
 }
 
 TEST(DistanceTest, SeqAlignDP) { 

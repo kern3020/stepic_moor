@@ -11,7 +11,11 @@ void freqPartial( string seq, int k, int d) {
   unique_ptr<BkTree> tree(new BkTree); 
   set<string> kmersInText; 
   set<string> kmersConsidered; // cache 
-  // populate tree 
+  shared_ptr <vector<KmerNode>> maxMatch = nullptr;
+  int maxCount = 0; 
+  string maxPattern; 
+
+  // populate tree
   size_t s = seq.size() + 1 - k ; 
   for (int i = 0; i < s; i++) {
     tree->insert(seq.substr(i,k), i);
@@ -22,13 +26,22 @@ void freqPartial( string seq, int k, int d) {
   // find most frequent kmer
 
   // for each kmer in the sequence
-  
   for (const auto &kmer : kmersInText) {
+    int curCount = 0; 
     // consider this kmer
     shared_ptr <vector<KmerNode>> r = tree->find_matches(kmer, 2);
-    cout << "Found " << r->size() << " hits for " << kmer << endl;
     for (auto elem : *r) {
-      cout << '\t' << elem << endl; 
+      curCount += elem.getCount();
+    }
+    if (curCount > maxCount) { 
+      maxMatch = r; 
+      r = nullptr;
+      maxCount = curCount; 
+      maxPattern = kmer; 
+      cout << "New max " << maxMatch->size() << " hits for " << kmer << endl;
+      for (auto elem : *maxMatch) { 
+	cout << '\t' << elem << endl;
+      }
     }
 
     // -- 2) consider kmers which are within distance, d, from this kmer
@@ -54,17 +67,31 @@ void freqPartial( string seq, int k, int d) {
 		}
 		return rc; 
 	      });
-    cout << "reversed: " << kmer_rev << endl; 
+
     r = tree->find_matches(kmer_rev, 2);
-    cout << "Found(reversed) " << r->size() << " hits for " << kmer_rev << endl;
+    curCount = 0; 
     for (auto elem : *r) {
-      cout << '\t' << elem << endl; 
+      curCount += elem.getCount();
+    }
+    if (curCount > maxCount) {
+      maxMatch = r; 
+      r = nullptr;
+      maxCount = curCount;
+      maxPattern = kmer_rev; 
+      cout << "New max " << r->size() << " hits for " << kmer_rev << "(reversed)" << endl;
+      for (auto elem : *maxMatch) {
+	cout << '\t' << elem << endl; 
+      }
     }
 
     // -- 4) consider kmers which are within distance, d, of this
     // -- reverse complement strand.
 
 
+  }
+  cout << "Pattern with most hits: " << maxPattern << ", " << maxCount << endl;
+  for (auto elem : *maxMatch) { 
+    cout << '\t' << elem << endl;
   }
 }
 

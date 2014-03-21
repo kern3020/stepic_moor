@@ -28,7 +28,6 @@ class KmerNode {
   vector<int> positions;
   int count;
   map< int, shared_ptr<KmerNode> > children; // edit distance => node
-  shared_ptr <Distance> d_ptr; 
 
  public:
 
@@ -37,7 +36,6 @@ class KmerNode {
     transform(this->name.begin(), this->name.end(), this->name.begin(), ::toupper);
     this->positions.push_back( pos);
     this->count = 1;
-    this->d_ptr = make_shared<LevenstheinReference>();
   }
 
   int getCount() { return count; } 
@@ -76,7 +74,8 @@ class KmerNode {
    */ 
   int distance(string seq) {
     transform(seq.begin(), seq.end(), seq.begin(), ::toupper);
-    return this->d_ptr->distance(this->name, seq);
+    unique_ptr <SeqAlignDP> d_ptr ( new SeqAlignDP(this->name, seq) );
+    return d_ptr->distance();
   }
 
   // operators 
